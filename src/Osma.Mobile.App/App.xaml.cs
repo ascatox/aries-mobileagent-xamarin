@@ -86,7 +86,7 @@ namespace Osma.Mobile.App
                             //   sovrin-staging
                             //   sovrin-builder
                             //   bcovrin-test
-                            options.PoolName = "TestPool";
+                            options.PoolName = "bcsovrin";
                         },
                         delayProvisioning: true));
 
