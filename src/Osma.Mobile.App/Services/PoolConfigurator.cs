@@ -18,13 +18,12 @@ namespace Osma.Mobile.App.Services
 
         private Dictionary<string, string> poolConfigs = new Dictionary<string, string>
         {
-            { "bcovrin", "pool_transactions_indy_bcovrin_genesis" },
-            { "TestPool", "pool_transactions_indy_local_genesis" },
-            { "sovrin-staging", "pool_transactions_sandbox_genesis" },
-            { "sovrin-live", "pool_transactions_live_genesis" },
-            { "sovrin-builder", "pool_transactions_builder_genesis" },
-            { "bcovrin-test", "pool_transactions_bcovrin_test_genesis" }
-            
+            {"bcovrin", "pool_transactions_indy_bcovrin_genesis"},
+            // { "TestPool", "pool_transactions_indy_local_genesis" },
+            // { "sovrin-staging", "pool_transactions_sandbox_genesis" },
+            //{ "sovrin-live", "pool_transactions_live_genesis" },
+            //{ "sovrin-builder", "pool_transactions_builder_genesis" },
+            //{ "bcovrin-test", "pool_transactions_bcovrin_test_genesis" }
         };
 
         public PoolConfigurator(

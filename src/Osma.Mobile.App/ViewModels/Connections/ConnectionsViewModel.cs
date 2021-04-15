@@ -81,7 +81,7 @@ namespace Osma.Mobile.App.ViewModels.Connections
         public async Task ScanInvite()
         {
             ConnectionInvitationMessage invitation = null;
-            bool isEmulated = true;  //ONLY FOR TESTING
+            bool isEmulated = false;  //ONLY FOR TESTING
             if (!isEmulated)
             {
                 var expectedFormat = ZXing.BarcodeFormat.QR_CODE;
@@ -108,19 +108,19 @@ namespace Osma.Mobile.App.ViewModels.Connections
             {
                 invitation = new ConnectionInvitationMessage()
                 {
-                    Id = "e3cd9dee-eb34-48d5-a367-33dff6ff9a24",
-                    Label = "Issuer",
+                    Id = "453b0d8e-50d0-4a18-bf44-7d7369a0c31f",
+                    Label = "Verifier",
                     Type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation",
                     ImageUrl = "",
                     RecipientKeys = new List<string>()
                     {
-                        "BkmzSmh64M8oDdBWK37b4sVU1GqFnMsxAeD2fRCyUDzs"
+                        "DPqj1fdVajDYdVgeT36NUSoVghjkapaHpVUdwbL1z6ye"
                     },
                     RoutingKeys = new List<string>()
                     {
-                        "J6XpwDH3WWhzaxTNBZMA3kphAhLKTLNfQGs2scE2d8G2"
+                        "9RUPb4jPtR2S1P9yVy85ugwiywqqzDfxRrDZnKCTQCtH"
                     },
-                    ServiceEndpoint = "http://mylocalhost:5001"
+                    ServiceEndpoint = "http://mylocalhost:5002"
                 };
             }   
             Device.BeginInvokeOnMainThread(async () =>
