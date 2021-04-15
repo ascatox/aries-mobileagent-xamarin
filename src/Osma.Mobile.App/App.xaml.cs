@@ -64,7 +64,7 @@ namespace Osma.Mobile.App
                     services.AddAriesFramework(builder => builder.RegisterEdgeAgent(
                         options: options =>
                         {
-                            options.EndpointUri = "http://localhost:5000";
+                            options.EndpointUri = "http://mylocalhost:5000";
 
                             options.WalletConfiguration.StorageConfiguration =
                                 new WalletConfiguration.WalletStorageConfiguration
@@ -72,7 +72,7 @@ namespace Osma.Mobile.App
                                     Path = Path.Combine(
                                         path1: FileSystem.AppDataDirectory,
                                         path2: ".indy_client",
-                                        path3: "wallets")
+                                        path3: "wallets")   
                                 };
                             options.WalletConfiguration.Id = "MobileWallet";
                             options.WalletCredentials.Key = "SecretWalletKey";
@@ -86,12 +86,11 @@ namespace Osma.Mobile.App
                             //   sovrin-staging
                             //   sovrin-builder
                             //   bcovrin-test
-                            options.PoolName = "sovrin-staging";
+                            options.PoolName = "TestPool";
                         },
                         delayProvisioning: true));
 
                     services.AddSingleton<IPoolConfigurator, PoolConfigurator>();
-
                     var containerBuilder = new ContainerBuilder();
                     containerBuilder.RegisterAssemblyModules(typeof(CoreModule).Assembly);
                     if (platformSpecific != null)
@@ -131,8 +130,9 @@ namespace Osma.Mobile.App
             {
                 await _navigationService.NavigateToAsync<RegisterViewModel>();
             }
-
             timer.Enabled = true;
+            
+            Hyperledger.Indy.Utils.Logger.Init();
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)

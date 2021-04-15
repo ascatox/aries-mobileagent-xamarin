@@ -135,6 +135,8 @@
     <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\pool_transactions_indy_bcovrin_genesis" />
+    <AndroidAsset Include="Assets\pool_transactions_indy_local_genesis" />
     <AndroidAsset Include="Assets\pool_transactions_bcovrin_test_genesis" />
     <AndroidAsset Include="Assets\pool_transactions_builder_genesis" />
     <AndroidAsset Include="Assets\pool_transactions_sandbox_genesis" />

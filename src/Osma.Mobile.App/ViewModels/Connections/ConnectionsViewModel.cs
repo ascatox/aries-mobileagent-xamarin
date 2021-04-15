@@ -31,12 +31,12 @@ namespace Osma.Mobile.App.ViewModels.Connections
         private readonly ILifetimeScope _scope;
 
         public ConnectionsViewModel(IUserDialogs userDialogs,
-                                    INavigationService navigationService,
-                                    IConnectionService connectionService,
-                                    IAgentProvider agentContextProvider,
-                                    IEventAggregator eventAggregator,
-                                    ILifetimeScope scope) :
-                                    base("Connections", userDialogs, navigationService)
+            INavigationService navigationService,
+            IConnectionService connectionService,
+            IAgentProvider agentContextProvider,
+            IEventAggregator eventAggregator,
+            ILifetimeScope scope) :
+            base("Connections", userDialogs, navigationService)
         {
             _connectionService = connectionService;
             _agentContextProvider = agentContextProvider;
@@ -49,8 +49,8 @@ namespace Osma.Mobile.App.ViewModels.Connections
             await RefreshConnections();
 
             _eventAggregator.GetEventByType<ApplicationEvent>()
-                            .Where(_ => _.Type == ApplicationEventType.ConnectionsUpdated)
-                            .Subscribe(async _ => await RefreshConnections());
+                .Where(_ => _.Type == ApplicationEventType.ConnectionsUpdated)
+                .Subscribe(async _ => await RefreshConnections());
 
             await base.InitializeAsync(navigationData);
         }
@@ -80,51 +80,80 @@ namespace Osma.Mobile.App.ViewModels.Connections
 
         public async Task ScanInvite()
         {
-            var expectedFormat = ZXing.BarcodeFormat.QR_CODE;
-            var opts = new ZXing.Mobile.MobileBarcodeScanningOptions { PossibleFormats = new List<ZXing.BarcodeFormat> { expectedFormat } };
-
-            var scanner = new ZXing.Mobile.MobileBarcodeScanner();
-
-            var result = await scanner.Scan(opts);
-            if (result == null) return;
-
-            ConnectionInvitationMessage invitation;
-
-            try
+            ConnectionInvitationMessage invitation = null;
+            bool isEmulated = true;  //ONLY FOR TESTING
+            if (!isEmulated)
             {
-                invitation = await MessageDecoder.ParseMessageAsync(result.Text) as ConnectionInvitationMessage
-                    ?? throw new Exception("Unknown message type");
-            }
-            catch (Exception)
-            {
-                DialogService.Alert("Invalid invitation!");
-                return;
-            }
+                var expectedFormat = ZXing.BarcodeFormat.QR_CODE;
+                var opts = new ZXing.Mobile.MobileBarcodeScanningOptions
+                    {PossibleFormats = new List<ZXing.BarcodeFormat> {expectedFormat}};
 
+                var scanner = new ZXing.Mobile.MobileBarcodeScanner();
+
+                var result = await scanner.Scan(opts);
+                if (result == null) return;
+
+                try
+                {
+                    invitation = await MessageDecoder.ParseMessageAsync(result.Text) as ConnectionInvitationMessage
+                                 ?? throw new Exception("Unknown message type");
+                }
+                catch (Exception)
+                {
+                    DialogService.Alert("Invalid invitation!");
+                    return;
+                }
+            }
+            else
+            {
+                invitation = new ConnectionInvitationMessage()
+                {
+                    Id = "e3cd9dee-eb34-48d5-a367-33dff6ff9a24",
+                    Label = "Issuer",
+                    Type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation",
+                    ImageUrl = "",
+                    RecipientKeys = new List<string>()
+                    {
+                        "BkmzSmh64M8oDdBWK37b4sVU1GqFnMsxAeD2fRCyUDzs"
+                    },
+                    RoutingKeys = new List<string>()
+                    {
+                        "J6XpwDH3WWhzaxTNBZMA3kphAhLKTLNfQGs2scE2d8G2"
+                    },
+                    ServiceEndpoint = "http://mylocalhost:5001"
+                };
+            }   
             Device.BeginInvokeOnMainThread(async () =>
             {
                 await NavigationService.NavigateToAsync<AcceptInviteViewModel>(invitation, NavigationType.Modal);
             });
         }
 
-        public async Task SelectConnection(ConnectionViewModel connection) => await NavigationService.NavigateToAsync(connection);
+        public async Task SelectConnection(ConnectionViewModel connection) =>
+            await NavigationService.NavigateToAsync(connection);
 
         #region Bindable Command
+
         public ICommand RefreshCommand => new Command(async () => await RefreshConnections());
 
         public ICommand ScanInviteCommand => new Command(async () => await ScanInvite());
 
-        public ICommand CreateInvitationCommand => new Command(async () => await NavigationService.NavigateToAsync<CreateInvitationViewModel>());
+        public ICommand CreateInvitationCommand => new Command(async () =>
+            await NavigationService.NavigateToAsync<CreateInvitationViewModel>());
 
         public ICommand SelectConnectionCommand => new Command<ConnectionViewModel>(async (connection) =>
         {
             if (connection != null)
                 await SelectConnection(connection);
         });
+
         #endregion
 
         #region Bindable Properties
-        private RangeEnabledObservableCollection<ConnectionViewModel> _connections = new RangeEnabledObservableCollection<ConnectionViewModel>();
+
+        private RangeEnabledObservableCollection<ConnectionViewModel> _connections =
+            new RangeEnabledObservableCollection<ConnectionViewModel>();
+
         public RangeEnabledObservableCollection<ConnectionViewModel> Connections
         {
             get => _connections;
@@ -132,6 +161,7 @@ namespace Osma.Mobile.App.ViewModels.Connections
         }
 
         private bool _hasConnections;
+
         public bool HasConnections
         {
             get => _hasConnections;
@@ -139,11 +169,13 @@ namespace Osma.Mobile.App.ViewModels.Connections
         }
 
         private bool _refreshingConnections;
+
         public bool RefreshingConnections
         {
             get => _refreshingConnections;
             set => this.RaiseAndSetIfChanged(ref _refreshingConnections, value);
         }
+
         #endregion
     }
 }

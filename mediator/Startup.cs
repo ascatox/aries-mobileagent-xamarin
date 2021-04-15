@@ -20,7 +20,7 @@ namespace mediator
             {
                 builder.RegisterMediatorAgent(options =>
                 {
-                    options.EndpointUri = "http://localhost:5000";
+                    options.EndpointUri = "http://mylocalhost:5000";
                     
                     options.WalletConfiguration.Id = "MediatorWallet";
                     options.WalletCredentials.Key = "SecretWalletKey";

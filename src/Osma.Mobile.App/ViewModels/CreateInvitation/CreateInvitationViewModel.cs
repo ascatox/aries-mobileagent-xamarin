@@ -32,7 +32,6 @@ namespace Osma.Mobile.App.ViewModels.CreateInvitation
             _agentContextProvider = agentContextProvider;
             _connectionService = defaultConnectionService;
         }
-
         public override async Task InitializeAsync(object navigationData)
         {
             await base.InitializeAsync(navigationData);

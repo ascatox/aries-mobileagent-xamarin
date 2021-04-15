@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Acr.UserDialogs;
+using Osma.Mobile.App.Services;
 using Osma.Mobile.App.Services.Interfaces;
 using Osma.Mobile.App.ViewModels.Account;
 using Osma.Mobile.App.ViewModels.Connections;
@@ -12,6 +13,8 @@ namespace Osma.Mobile.App.ViewModels
 {
     public class MainViewModel : ABaseViewModel
     {
+        private IPoolConfigurator poolConfigurator;
+
         public MainViewModel(
             IUserDialogs userDialogs,
             INavigationService navigationService,
@@ -19,6 +22,7 @@ namespace Osma.Mobile.App.ViewModels
             CredentialsViewModel credentialsViewModel,
             AccountViewModel accountViewModel,
             CreateInvitationViewModel createInvitationViewModel,
+            IPoolConfigurator _poolConfigurator,
             ProofRequestsViewModel proofRequestsViewModel) : base(nameof(MainViewModel), userDialogs, navigationService)
         {
             Connections = connectionsViewModel;
@@ -26,6 +30,7 @@ namespace Osma.Mobile.App.ViewModels
             Account = accountViewModel;
             CreateInvitation = createInvitationViewModel;
             ProofRequests = proofRequestsViewModel;
+            poolConfigurator = _poolConfigurator;
         }
 
         public override async Task InitializeAsync(object navigationData)
@@ -36,6 +41,9 @@ namespace Osma.Mobile.App.ViewModels
             await CreateInvitation.InitializeAsync(null);
             await ProofRequests.InitializeAsync(null);
             await base.InitializeAsync(navigationData);
+            await poolConfigurator.ConfigurePoolsAsync();
+
+
         }
 
         #region Bindable Properties

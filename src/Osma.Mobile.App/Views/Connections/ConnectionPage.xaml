@@ -49,7 +49,7 @@
                 AbsoluteLayout.LayoutFlags="SizeProportional"
                 BackgroundColor="{StaticResource NavigationBarColor}"
             >
-                    <Grid
+                <Grid
                         IsClippedToBounds="false"
                     >
                             <Grid.RowDefinitions>

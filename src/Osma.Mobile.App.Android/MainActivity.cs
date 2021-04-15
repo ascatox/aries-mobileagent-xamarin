@@ -55,7 +55,11 @@ namespace Osma.Mobile.App.Droid
         {
             Manifest.Permission.ReadExternalStorage,
             Manifest.Permission.WriteExternalStorage,
-            Manifest.Permission.Camera
+            Manifest.Permission.Camera,
+            Manifest.Permission.Internet,
+            Manifest.Permission.AccessWifiState,
+            Manifest.Permission.AccessNetworkState
+            
         };
 
         private int _requestCode = -1;
